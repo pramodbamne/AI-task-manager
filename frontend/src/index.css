@@ -1,0 +1,168 @@
+/* src/index.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    color: #333;
+}
+
+/* Auth Pages */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-left: 250px; /* Space for the logo */
+}
+
+.auth-form {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-form h2 {
+    margin-bottom: 20px;
+}
+
+.auth-form input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-form button:hover {
+    background-color: #0056b3;
+}
+
+.auth-form p {
+    margin-top: 20px;
+}
+
+/* Dashboard Page */
+.dashboard-container {
+    display: flex;
+    padding-left: 250px; /* Space for the logo */
+}
+
+.dashboard-content {
+    width: 100%;
+    padding: 20px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.logout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.task-form-container, .task-list-container {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.task-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.task-form input, .task-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.task-form button {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+
+.task-item {
+    background: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.priority-low { border-left-color: #17a2b8; }
+.priority-normal { border-left-color: #28a745; }
+.priority-high { border-left-color: #ffc107; }
+.priority-urgent { border-left-color: #dc3545; }
+
+/* src/index.css */
+
+/* ... add this to your existing CSS file ... */
+
+.task-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    align-self: flex-end;
+}
+
+.task-actions button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-edit { background-color: #007bff; }
+.btn-delete { background-color: #dc3545; }
+.btn-save { background-color: #28a745; }
+.btn-cancel { background-color: #6c757d; }
+
+.edit-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
