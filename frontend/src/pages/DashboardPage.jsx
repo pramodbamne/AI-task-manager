@@ -1,15 +1,17 @@
-// src/pages/DashboardPage.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import Logo from '../components/Logo';
 import { useNavigate } from 'react-router-dom';
+import ChatbotIcon from '../components/ChatbotIcon';
+import ChatModal from '../components/ChatModal';
 
 const DashboardPage = ({ setAuth }) => {
     const [tasks, setTasks] = useState([]);
     const [user, setUser] = useState(null);
     const [newTask, setNewTask] = useState({ description: '', status: 'Pending', priority: 'Normal', deadline: '' });
     
-    // State for inline editing
+    const [isChatOpen, setIsChatOpen] = useState(false);
+
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [editFormData, setEditFormData] = useState({ description: '', status: '', priority: '', deadline: '' });
 
@@ -47,8 +49,6 @@ const DashboardPage = ({ setAuth }) => {
         }
     };
 
-    // --- NEW FUNCTIONS FOR EDIT AND DELETE ---
-
     const handleDelete = async (taskId) => {
         if (window.confirm('Are you sure you want to delete this task?')) {
             try {
@@ -62,7 +62,6 @@ const DashboardPage = ({ setAuth }) => {
 
     const handleEditClick = (task) => {
         setEditingTaskId(task.task_id);
-        // Format date for the input[type=date]
         const formattedDeadline = new Date(task.deadline).toISOString().split('T')[0];
         setEditFormData({ ...task, deadline: formattedDeadline });
     };
@@ -89,58 +88,57 @@ const DashboardPage = ({ setAuth }) => {
         }
     };
 
-    // REPLACE IT WITH THIS:
-const handleLogout = async () => {
-    try {
-        await api.post('/auth/logout');
-        setAuth(false);
-        navigate('/login');
-    } catch (error) {
-        console.error('Logout failed', error);
-    }
-};
+    const handleLogout = async () => {
+        try {
+            await api.post('/auth/logout');
+            setAuth(false);
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    };
+
+    const addNewTaskToList = (newTask) => {
+        setTasks(prevTasks => [...prevTasks, newTask]);
+    };
     
     if (!user) return <div>Loading...</div>;
 
     return (
-    <div className="dashboard-container">
-     <Logo />
+        <div className="dashboard-container">
+            <Logo />
             <div className="dashboard-content">
                 <header className="dashboard-header">
-                    <h1>Welcome, {user.name}!</h1>
+                    <h1>Welcome, {user.email}!</h1>
                     <button onClick={handleLogout} className="logout-btn">Logout</button>
                 </header>
 
-                {/* Add New Task Form */}
-<div className="task-form-container">
-    <h2>Add New Task</h2>
-    <form onSubmit={handleAddTask} className="task-form">
-        {/* Ensure these lines are correct */}
-        <input type="text" name="description" placeholder="Task Description" value={newTask.description} onChange={handleNewTaskChange} required />
-        <input type="date" name="deadline" value={newTask.deadline} onChange={handleNewTaskChange} required />
-        <select name="priority" value={newTask.priority} onChange={handleNewTaskChange}>
-            <option value="Low">Low</option>
-            <option value="Normal">Normal</option>
-            <option value="High">High</option>
-            <option value="Urgent">Urgent</option>
-        </select>
-        <select name="status" value={newTask.status} onChange={handleNewTaskChange}>
-             <option value="Pending">Pending</option>
-             <option value="In Progress">In Progress</option>
-             <option value="Completed">Completed</option>
-        </select>
-        <button type="submit">Add Task</button>
-    </form>
-</div>
+                <div className="task-form-container">
+                    <h2>Add New Task</h2>
+                    <form onSubmit={handleAddTask} className="task-form">
+                        <input type="text" name="description" placeholder="Task Description" value={newTask.description} onChange={handleNewTaskChange} required />
+                        <input type="date" name="deadline" value={newTask.deadline} onChange={handleNewTaskChange} required />
+                        <select name="priority" value={newTask.priority} onChange={handleNewTaskChange}>
+                            <option value="Low">Low</option>
+                            <option value="Normal">Normal</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                        <select name="status" value={newTask.status} onChange={handleNewTaskChange}>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                        <button type="submit">Add Task</button>
+                    </form>
+                </div>
 
-                {/* Task List */}
                 <div className="task-list-container">
                     <h2>Your Tasks</h2>
                     <ul className="task-list">
                         {tasks.map(task => (
                             <li key={task.task_id} className={`task-item priority-${task.priority.toLowerCase()}`}>
                                 {editingTaskId === task.task_id ? (
-                                    // --- EDIT FORM ---
                                     <form onSubmit={handleUpdateSubmit} className="edit-task-form">
                                         <input type="text" name="description" value={editFormData.description} onChange={handleEditFormChange} required />
                                         <input type="date" name="deadline" value={editFormData.deadline} onChange={handleEditFormChange} required/>
@@ -161,7 +159,6 @@ const handleLogout = async () => {
                                         </div>
                                     </form>
                                 ) : (
-                                    // --- TASK DISPLAY ---
                                     <>
                                         <h3>{task.description}</h3>
                                         <p>Status: {task.status}</p>
@@ -178,6 +175,13 @@ const handleLogout = async () => {
                     </ul>
                 </div>
             </div>
+
+            <ChatbotIcon onClick={() => setIsChatOpen(prev => !prev)} />
+            <ChatModal 
+                isOpen={isChatOpen} 
+                onClose={() => setIsChatOpen(false)} 
+                onTaskAdded={addNewTaskToList}
+            />
         </div>
     );
 };
