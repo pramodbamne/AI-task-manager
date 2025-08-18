@@ -1,3 +1,4 @@
+// frontend/src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
@@ -36,6 +37,7 @@ const LoginPage = ({ setAuth }) => {
                 <p>
                     Don't have an account? <Link to="/register">Register</Link>
                 </p>
+                {/* FIX: Ensures the Forgot Password link is present */}
                 <p>
                     <Link to="/forgot-password">Forgot Password?</Link>
                 </p>

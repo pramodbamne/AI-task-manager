@@ -1,11 +1,12 @@
-// src/pages/RegisterPage.jsx
+// frontend/src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import Logo from '../components/Logo';
 
 const RegisterPage = ({ setAuth }) => {
-    const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+    // FIX: State updated to only use email and password
+    const [formData, setFormData] = useState({ email: '', password: '' });
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -30,7 +31,7 @@ const RegisterPage = ({ setAuth }) => {
             <div className="auth-form">
                 <h2>Register</h2>
                 <form onSubmit={handleSubmit}>
-                    <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+                    {/* FIX: Removed the input field for 'name' */}
                     <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                     <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                     <button type="submit">Register</button>

@@ -2,9 +2,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.NODE_ENV === 'production'
-        ? 'https://your-backend-name.onrender.com' // We will replace this later
-        : 'http://localhost:5000',
+    // This now correctly points to your local backend
+    baseURL: 'http://localhost:5000/api',
     withCredentials: true
 });
 

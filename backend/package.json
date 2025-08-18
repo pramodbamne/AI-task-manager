@@ -4,7 +4,7 @@
   "description": "\"Task manager using Node,Mysql and react\"",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js" 
+    "start": "node server.js"
   },
   "author": "\"Pramod Bamane \"",
   "license": "ISC",
@@ -15,7 +15,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
-    "mysql2": "^3.14.3",
+    "pg": "^8.16.3",
     "redis": "^5.7.0",
     "resend": "^4.7.0"
   },
