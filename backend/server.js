@@ -4,7 +4,10 @@ const session = require('express-session');
 const cors = require('cors');
 require('dotenv').config();
 
-// Make sure both route files are required
+// Require your database and redis clients
+const pool = require('./db');
+const redisClient = require('./config/redisConnection');
+
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 
@@ -21,14 +24,30 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: new (require('connect-redis').default)({ client: redisClient }), // connect-redis store
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 // 24 hours
+        maxAge: 1000 * 60 * 60 * 24
     }
 }));
 
-// These two lines are crucial. They tell your server to use your route files.
+// --- NEW HEALTH CHECK ENDPOINT ---
+app.get('/healthz', async (req, res) => {
+    try {
+        // Check database connection
+        await pool.query('SELECT 1');
+        // Check Redis connection
+        await redisClient.ping();
+        
+        res.status(200).send('OK');
+    } catch (error) {
+        console.error('Health check failed:', error);
+        res.status(503).send('Service Unavailable');
+    }
+});
+// --- END OF NEW HEALTH CHECK ENDPOINT ---
+
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
